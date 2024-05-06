@@ -13,10 +13,9 @@ the fan speed.
 ## Dependencies
 
 The `nvidia_fan_controller.py` script does not depend on any other python libraries. It does,
-however, require the following two command-line utilities:
+however, require the following command-line utility:
 
 - `nvidia-settings`
-- `nvidia-smi`
 
 Please make sure that these are installed on your system.
 

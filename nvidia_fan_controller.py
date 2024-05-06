@@ -195,9 +195,24 @@ def run_cmd(cmd: List[str]) -> str:
 
 
 def get_measurements() -> List[Tuple[int, int, int]]:
-    stdout = run_cmd(['nvidia-smi', '--query-gpu=index,temperature.gpu,fan.speed', '--format=csv,noheader'])
-    measurements = re.findall(r'(\d+), (\d+), (\d+) %', stdout, flags=re.MULTILINE)
-    measurements = [tuple(map(int, values)) for values in measurements]  # parse ints
+    stdout = run_cmd(["nvidia-settings", "-q", "gpus", "--verbose"])
+    gpus = re.finditer(r'\[gpu:(\d+)\].*?Is connected to the following Fans:(.*?)\s*Is ', stdout, flags=re.DOTALL)
+
+    info_gpus = [
+        {
+            'gpu_id': match.group(1),
+            'fan_ids': re.findall(r'\[fan:(\d+)\]', match.group(2))
+        }
+        for match in gpus
+    ]
+
+    measurements = []
+    for info_gpu in info_gpus:
+        stdout = run_cmd(['nvidia-settings', '-q', f"[gpu-{info_gpu['gpu_id']}]/GPUCoreTemp", '-t'])
+        temp = re.findall(r'(\d+)', stdout, flags=re.MULTILINE)[0]
+
+        measurements.extend([tuple([int(fan_id), int(temp), get_fan_speed(int(fan_id))]) for fan_id in info_gpu['fan_ids']])
+
     return measurements  # [(index, temperature, fanspeed)]
 
 
