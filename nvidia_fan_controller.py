@@ -15,20 +15,18 @@ logger = logging.getLogger('nvidia-fan-controller')
 SERVICE_FILE_TEMPLATE = """
 [Unit]
 Description=Nvidia GPU Fan Controller
+PartOf=graphical-session.target
+After=graphical-session.target
 
 [Service]
 Type=simple
-User={USER}
-Group={USER}
-PIDFile=/run/nvidia-fan-control.pid
 Environment=DISPLAY={DISPLAY}
-Environment=XAUTHORITY={XAUTHORITY}
 ExecStart=/usr/bin/python3 {FILEPATH} --target-temperature {TARGET_TEMPERATURE} --interval-secs {INTERVAL_SECS} --log-level INFO
 Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
 
 """
 

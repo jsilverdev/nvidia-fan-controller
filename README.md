@@ -92,10 +92,10 @@ the contents of the service file to see if all fields are populated properly.
 If all looks good, install the service using the following sequence of commands:
 
 ```
-sudo cp nvidia-fan-controller.service /etc/systemd/system/
-sudo systemctl enable nvidia-fan-controller.service
-sudo systemctl daemon-reload
-sudo systemctl restart nvidia-fan-controller.service
+cp nvidia-fan-controller.service ~/.config/systemd/user
+systemctl --user enable nvidia-fan-controller.service
+systemctl --user daemon-reload
+systemctl --user restart nvidia-fan-controller.service
 ```
 
 
@@ -105,10 +105,10 @@ If you wish to uninstall the service, run the following commands to undo the ins
 outlined above:
 
 ```
-sudo systemctl stop nvidia-fan-controller.service
-sudo systemctl disable nvidia-fan-controller.service
-sudo systemctl daemon-reload
-sudo rm /etc/systemd/system/nvidia-fan-controller.service
+systemctl --user stop nvidia-fan-controller.service
+systemctl --user disable nvidia-fan-controller.service
+systemctl --user daemon-reload
+rm ~/.config/systemd/user/nvidia-fan-controller.service
 ```
 
 
