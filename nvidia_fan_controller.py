@@ -15,7 +15,6 @@ logger = logging.getLogger('nvidia-fan-controller')
 SERVICE_FILE_TEMPLATE = """
 [Unit]
 Description=Nvidia GPU Fan Controller
-PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
@@ -26,7 +25,7 @@ Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=graphical.target
+WantedBy=graphical-session.target
 
 """
 
